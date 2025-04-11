@@ -6,6 +6,12 @@ import { Button } from "@/components/ui/button";
 import { FileDropzone } from "@/components/ui/file-dropzone";
 import { FilePreview } from "@/components/ui/file-preview";
 import { ChangeEvent, useState, useCallback } from "react";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 import { motion, AnimatePresence } from "framer-motion";
 import * as xlsx from "xlsx";
 
@@ -102,8 +108,8 @@ export default function Home() {
             lines.forEach((line) => {
               const match = line.match(lineNumberRegex);
               if (match) {
-                const id = match[1]; 
-                const content = match[2]; 
+                const id = match[1];
+                const content = match[2];
                 translatedData.push({
                   id: id,
                   text: content,
@@ -116,7 +122,6 @@ export default function Home() {
               }
             });
           }
-
 
           const mergedData = [...originalData];
 
@@ -132,7 +137,7 @@ export default function Home() {
             "nl",
             "ar",
           ];
-          let detectedLang = "es"; 
+          let detectedLang = "es";
 
           const fileName = selectedFile.name.toLowerCase();
           const foundLangCode = languageCodes.find((code) =>
@@ -154,7 +159,7 @@ export default function Home() {
           );
 
           if (targetLangColIndex === -1 || targetLangColIndex === null) {
-            console.log(`Adding column '${detectedLang}' to header row`);
+            `Adding column '${detectedLang}' to header row`;
             targetLangColIndex = headerRow.length;
             headerRow.push(detectedLang.toUpperCase());
 
@@ -163,9 +168,7 @@ export default function Home() {
             }
           }
 
-          console.log(
-            `Target language column is '${detectedLang}' at index ${targetLangColIndex}`
-          );
+          `Target language column is '${detectedLang}' at index ${targetLangColIndex}`;
 
           const idToTranslationMap = new Map<string | number, string>();
           translatedData.forEach((item) => {
@@ -184,7 +187,7 @@ export default function Home() {
 
           let matchesFound = 0;
           if (translatedData.length > 0) {
-            console.log("Trying to match by line number/ID");
+            ("Trying to match by line number/ID");
 
             for (let i = 1; i < mergedData.length; i++) {
               const lineId = String(i);
@@ -196,7 +199,7 @@ export default function Home() {
               }
             }
 
-            console.log(`Found ${matchesFound} translations by line number`);
+            `Found ${matchesFound} translations by line number`;
           }
 
           const mergedWorkbook = xlsx.utils.book_new();
@@ -421,7 +424,7 @@ export default function Home() {
 
   const translateFile = useCallback(async () => {
     if (!proccededData || proccededData.length === 0) {
-      console.log("No data to translate");
+      ("No data to translate");
       return;
     }
 
@@ -439,8 +442,8 @@ export default function Home() {
 
       const formData = new FormData();
       formData.append("file", fileToTranslate);
-      formData.append("sourceLanguage", "EN"); 
-      formData.append("targetLanguage", "ES"); 
+      formData.append("sourceLanguage", "EN");
+      formData.append("targetLanguage", "ES");
 
       const response = await fetch("/api/translate", {
         method: "POST",
@@ -976,7 +979,7 @@ export default function Home() {
                           });
                         }
 
-                        const mergedData = [...originalData]; 
+                        const mergedData = [...originalData];
 
                         const languageCodes = [
                           "fr",
@@ -990,7 +993,7 @@ export default function Home() {
                           "nl",
                           "ar",
                         ];
-                        let detectedLang = "es"; 
+                        let detectedLang = "es";
 
                         const fileName = selectedFile.name.toLowerCase();
                         const foundLangCode = languageCodes.find((code) =>
@@ -1015,9 +1018,7 @@ export default function Home() {
                           targetLangColIndex === -1 ||
                           targetLangColIndex === null
                         ) {
-                          console.log(
-                            `Adding column '${detectedLang}' to header row`
-                          );
+                          `Adding column '${detectedLang}' to header row`;
                           targetLangColIndex = headerRow.length;
                           headerRow.push(detectedLang.toUpperCase());
 
@@ -1046,7 +1047,7 @@ export default function Home() {
 
                         let matchesFound = 0;
                         if (translatedData.length > 0) {
-                          console.log("Trying to match by line number/ID");
+                          ("Trying to match by line number/ID");
 
                           for (let i = 1; i < mergedData.length; i++) {
                             const lineId = String(i);
@@ -1058,9 +1059,7 @@ export default function Home() {
                             }
                           }
 
-                          console.log(
-                            `Found ${matchesFound} translations by line number`
-                          );
+                          `Found ${matchesFound} translations by line number`;
                         }
 
                         const mergedWorkbook = xlsx.utils.book_new();
@@ -1403,7 +1402,95 @@ export default function Home() {
         </motion.div>
 
         <footer className="text-center text-sm text-white/60">
-          <p>Auto translation powered by DeepL API</p>
+          <div className="mt-8 backdrop-blur-sm border border-white/10 rounded-xl p-6 bg-black/50 shadow-lg shadow-black/5">
+            <h3 className="text-xl font-semibold mb-6 text-white/90">
+              How to use:
+            </h3>
+
+            <Accordion type="single" collapsible className="w-full">
+              <AccordionItem
+                value="instructions"
+                className="border border-white/10 mb-4 rounded-xl overflow-hidden backdrop-blur-sm transition-all duration-300 data-[state=open]:shadow-lg "
+              >
+                <motion.div
+                  whileHover={{ backgroundColor: "rgba(0, 0, 0, 0.3)" }}
+                  className="rounded-t-xl"
+                >
+                  <AccordionTrigger className="hover:no-underline text-white px-5 py-4 font-medium transition-all duration-300">
+                    <motion.span
+                      initial={{ opacity: 0.9 }}
+                      whileHover={{ opacity: 1 }}
+                      className="flex items-center gap-2"
+                    >
+                      <svg
+                        className="w-5 h-5 text-primary"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M9 5l7 7-7 7"
+                        />
+                      </svg>
+                      View detailed instructions
+                    </motion.span>
+                  </AccordionTrigger>
+                </motion.div>
+                <AccordionContent className="bg-black/30 border-t border-white/10 data-[state=open]:animate-accordionSlideDown data-[state=closed]:animate-accordionSlideUp">
+                  <motion.div
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.3 }}
+                    className="px-5 py-4"
+                  >
+                    <ol className="space-y-3 text-white/80 list-decimal pl-5 text-left">
+                      <li>
+                        Inside of CopyDoc, click{" "}
+                        <span className="text-primary font-medium">
+                          localise frames
+                        </span>{" "}
+                        and export as XLSX
+                      </li>
+                      <li>
+                        Import this file into Translate using the uploader above
+                      </li>
+                      <li>
+                        Translate should find the correct column, which should
+                        be the one labeled{" "}
+                        <span className="font-mono bg-black/30 px-1.5 py-0.5 rounded text-sm">
+                          figma_text
+                        </span>
+                      </li>
+                      <li>Scroll to bottom and download the extracted data</li>
+                      <li>
+                        Translate the text document using any translation tool
+                        that keeps the formatting the same (DeepL recommended)
+                      </li>
+                      <li>
+                        Use the '
+                        <span className="italic">
+                          I'll translate the document manually
+                        </span>
+                        ' button and then import the translated text file back
+                        into Translate
+                      </li>
+                      <li>
+                        The end column that was created by CopyDoc should now be
+                        filled in with the translated data!
+                      </li>
+                      <li>
+                        Download the merged file and import it back into
+                        CopyDoc, and your content will be localised!
+                      </li>
+                    </ol>
+                  </motion.div>
+                </AccordionContent>
+              </AccordionItem>
+            </Accordion>
+          </div>
         </footer>
       </div>
     </div>

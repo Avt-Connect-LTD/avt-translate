@@ -12,9 +12,9 @@ const translator = new deepl.Translator(process.env.DEEPL_API || "", {
 function logFileDetails(message: string, filePath: string) {
   try {
     const stats = fs.statSync(filePath);
-    console.log(`${message}: ${filePath}, size: ${stats.size} bytes`);
+    `${message}: ${filePath}, size: ${stats.size} bytes`;
   } catch (error) {
-    console.log(`${message}: ${filePath}, error: ${error}`);
+    `${message}: ${filePath}, error: ${error}`;
   }
 }
 
@@ -23,7 +23,7 @@ export async function POST(request: Request) {
   let outputFilePath = "";
 
   try {
-    console.log("Starting document translation process...");
+    ("Starting document translation process...");
     const formData = await request.formData();
     const file = formData.get("file") as File;
 
@@ -34,9 +34,7 @@ export async function POST(request: Request) {
       );
     }
 
-    console.log(
-      `File received: ${file.name}, size: ${file.size}, type: ${file.type}`
-    );
+    `File received: ${file.name}, size: ${file.size}, type: ${file.type}`;
 
     let sourceLanguage = (formData.get("sourceLanguage") as string) || "DE";
     let targetLanguage = (formData.get("targetLanguage") as string) || "EN-US";
@@ -48,7 +46,7 @@ export async function POST(request: Request) {
       targetLanguage = "EN-US";
     }
 
-    console.log(`Translation request: ${sourceLanguage} → ${targetLanguage}`);
+    `Translation request: ${sourceLanguage} → ${targetLanguage}`;
 
     const arrayBuffer = await file.arrayBuffer();
     const buffer = Buffer.from(arrayBuffer);
@@ -62,19 +60,17 @@ export async function POST(request: Request) {
     logFileDetails("Input file written", inputFilePath);
 
     try {
-      console.log(
-        `Starting translation from ${sourceLanguage} to ${targetLanguage}...`
-      );
+      `Starting translation from ${sourceLanguage} to ${targetLanguage}...`;
 
       await translator.translateDocument(
         inputFilePath,
         outputFilePath,
         sourceLanguage as SourceLanguageCode,
         targetLanguage as TargetLanguageCode,
-        { formality: "less" } 
+        { formality: "less" }
       );
 
-      console.log("Translation completed successfully");
+      ("Translation completed successfully");
       logFileDetails("Output file created", outputFilePath);
 
       if (!fs.existsSync(outputFilePath)) {
@@ -82,13 +78,11 @@ export async function POST(request: Request) {
       }
 
       const translatedContent = fs.readFileSync(outputFilePath);
-      console.log(`Translated content size: ${translatedContent.length} bytes`);
+      `Translated content size: ${translatedContent.length} bytes`;
 
       const inputStats = fs.statSync(inputFilePath);
       const outputStats = fs.statSync(outputFilePath);
-      console.log(
-        `Original size: ${inputStats.size} bytes, Translated size: ${outputStats.size} bytes`
-      );
+      `Original size: ${inputStats.size} bytes, Translated size: ${outputStats.size} bytes`;
 
       if (inputStats.size === outputStats.size) {
         console.warn(
@@ -99,7 +93,7 @@ export async function POST(request: Request) {
       try {
         fs.unlinkSync(inputFilePath);
         fs.unlinkSync(outputFilePath);
-        console.log("Temporary files cleaned up successfully");
+        ("Temporary files cleaned up successfully");
       } catch (cleanupError) {
         console.error("Error cleaning up temp files:", cleanupError);
       }
@@ -123,9 +117,7 @@ export async function POST(request: Request) {
 
       if (error.documentHandle) {
         const handle = error.documentHandle;
-        console.log(
-          `Document ID: ${handle.documentId}, Document key: ${handle.documentKey}`
-        );
+        `Document ID: ${handle.documentId}, Document key: ${handle.documentKey}`;
 
         return NextResponse.json(
           {
