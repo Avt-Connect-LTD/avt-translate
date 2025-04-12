@@ -1,6 +1,3 @@
-
-<img width="full" alt="Frame 630714" src="https://github.com/user-attachments/assets/68b9356c-473b-412a-ad2c-16bf198ff473" />
-
 # Figma copyDoc Translate tool 
 Translate is a tool to quickly simplify the long task of translating text inside of Figma by bridging the gap between Figma and Translation tools like DeepL
 
